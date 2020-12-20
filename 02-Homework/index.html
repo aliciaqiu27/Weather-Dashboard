@@ -12,12 +12,17 @@
 
 <main id="mainContainer" class="row">
     <container class="col-2">
+        <container class="row">
         <form id="weather-form">
-            <label for="locationInput"><strong>Location</strong></label>
-            <input type="text" id="locationInput" placeholder="(e.g. Las Vegas)"><br>
+            <label for="locationInput"><strong><h2>Search for a city:</h2></strong></label>
+            <input type="text" id="locationInput" placeholder="Las Vegas">
         <!-- This button will trigger our AJAX call -->
             <input id="searchButton" type="submit" value="Search"></input>
         </form>
+        
+        <div id="History-goes-here" class="row"></div>
+
+    </container>
     </container>
 
     <container class="col-10">
@@ -34,7 +39,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-    
+        let userCityArray = JSON.parse(localStorage.getItem("cities")) || []
+        console.log(userCityArray[0]);
         $("#searchButton").on("click", function(event) {
 
         // event.preventDefault() can be used to prevent an event's default behavior.
@@ -49,7 +55,18 @@
             console.log(cityName);
             var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
             // var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
+            
+            $("#History-goes-here").empty();
+            userCityArray.push(cityName);
+            console.log(userCityArray)
+            localStorage.setItem("cities",JSON.stringify(userCityArray))
 
+            for (let i = 0; i < userCityArray.length; i++) {
+                let citiesDiv = $("<p>");
+                citiesDiv.addClass("historyBlock")
+                citiesDiv.prepend(userCityArray[i])
+                $("#History-goes-here").prepend(citiesDiv);
+            }
 
         $.ajax({
             url: queryURL,
@@ -81,19 +98,17 @@
             console.log(currentWeatherIcon)
 
 
-            let userCity = $("<p>").html("<h1>" + cityName + "</h1>");
+            let userCity = $("<header>").html("<h1>" + cityName + "</h1>");
+            userCity.css("display", "inline-block");
             let currentIcon = $("<img>").attr('src', currentWeatherIcon);
+            currentIcon.css("display", "inline-block");
             let currentTemp = $("<li>").text("Temperature: " + currentRes.temp);
             let currentHumidity = $("<li>").text("Humidity: " + currentRes.humidity);
-            let currentWindSpeed = $("<li>").text("Wind Speed: " + currentRes.weather.wind_speed);
+            let currentWindSpeed = $("<li>").text("Wind Speed: " + currentRes.wind_speed);
             let currentUVId = $("<li>").text("UV Index: " + currentRes.uvi);
 
-            currentDiv.append(userCity);
-            currentDiv.append(currentIcon);
-            currentDiv.append(currentTemp);
-            currentDiv.append(currentHumidity);
-            currentDiv.append(currentWindSpeed);
-            currentDiv.append(currentUVId);
+            currentDiv.append(userCity, currentIcon, currentTemp, currentHumidity, currentWindSpeed, currentUVId);
+
 
             $("#currentResults").append(currentDiv);
 
@@ -106,7 +121,7 @@
 
                 // Creating and storing a div tag
                 var forecastDiv = $("<div>");
-                forecastDiv.addClass("col-md")
+                forecastDiv.addClass("col-md forecast-div")
 
                 var iconArray = results[i].weather[0].icon;
                 console.log(iconArray);
@@ -123,10 +138,21 @@
                 forecastDiv.append(dailyHumidity);
 
                 $("#UV-index-results-here").append(forecastDiv);
-
-                
             }
-        });
+
+        })
+        .catch(err=>console.log(err))
+        
+
+        
+            // //User clicks on save button
+            // $('#searchButton').on('click', saveToLocalStorage);
+
+            // function saveToLocalStorage() {
+            //         localStorage.setItem(whatToDoHour, whatToDo);
+            //     });
+            // };
+        
 
     });
 
