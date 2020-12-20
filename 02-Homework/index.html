@@ -94,13 +94,23 @@
                 var forecastDiv = $("<div>");
                 forecastDiv.addClass("col-md")
 
+                var iconArray = results[i].weather[0].icon;
+                console.log(iconArray);
+                var weatherIcon = "http://openweathermap.org/img/w/" + iconArray + ".png";
+                console.log(weatherIcon);
+                var iconDisplayed = $("<img>").attr('src', weatherIcon)
+
                 // Creating a paragraph tag with the result item's rating
                 var dailyTemp = $("<p>").text("Temperature: " + results[i].temp.day);
                 var dailyHumidity = $("<p>").text("Humidity: " + results[i].humidity);
                 // Appending the paragraph and image tag to the animalDiv
+                forecastDiv.append(iconDisplayed);
                 forecastDiv.append(dailyTemp);
                 forecastDiv.append(dailyHumidity)
-                $("#UV-index-results-here").prepend(forecastDiv);
+
+                $("#UV-index-results-here").append(forecastDiv);
+
+                
             }
 
 
