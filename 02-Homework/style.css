@@ -1,0 +1,17 @@
+#mainContainer {
+    padding:2%;
+}
+
+#weather-form {
+    align-content: left;
+    left: 1%;
+    color: black;
+}
+
+#locationInput {
+    max-width: 100%;
+}
+
+#mainContainer ul {
+    list-style-type: none;
+}

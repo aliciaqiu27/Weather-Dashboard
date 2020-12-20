@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<main id="mainContainer" class="row">
+    <container class="col-3">
+        <form id="weather-form">
+            <label for="locationInput"><strong>Location</strong></label>
+            <input type="text" id="locationInput" placeholder="(e.g. Las Vegas)"><br>
+        <!-- This button will trigger our AJAX call -->
+            <input id="searchButton" type="submit" value="Search"></input>
+        </form>
+    </container>
+
+    <container class="col-9">
+    <div class="row">
+    <ul>
+    <header id="cityNameData"></header>
+    <li><div id="temperature"></div></li>
+    <li><div id="humidity"></div></li>
+    <li><div id="wind-speed"></div></li>
+    <li><div id="uvIndex"></div></li>
+    </ul>
+    <!-- <button id="searchButton">Search</button> -->
+    </div>
+
+    <div id="UV-index-results-here">
+    </div>
+    </container>
+</main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    
+        $("#searchButton").on("click", function(event) {
+
+        // event.preventDefault() can be used to prevent an event's default behavior.
+        // Here, it prevents the submit button from trying to submit a form when clicked
+        event.preventDefault();
+
+        // $(document).ready(function () {
+            var searchBtn = $("#searchButton");
+
+            // searchBtn.on("click", function() {
+            var cityName = $("#locationInput").val().trim();
+            console.log(cityName);
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
+            // var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
+
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+
+        console.log(response);
+
+            var lat = response.coord.lat
+            console.log(lat);
+            var lon = response.coord.lon
+            console.log(lon);
+
+            var ForecastIndexQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly" + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
+
+        $.ajax({
+            url: ForecastIndexQueryURL,
+            method: "GET"
+        }).then(function(res) {
+            console.log(res);
+
+            $("#cityNameData").html("<h1>" + cityName + "</h1>");
+            $("#temperature").text("Temperature: " + res.current.temp);
+            $("#humidity").text("Humidity: " + res.current.humidity);
+            $("#wind-speed").text("Wind Speed: " + res.current.weather.wind_speed);
+            $("#uvIndex").text("Wind Speed: " + res.current.uvi);
+
+
+        });
+
+    });
+
+    // $.ajax({
+    //       url: fiveDayForecast,
+    //       method: "GET"
+    //     }).then(function(resp) {
+
+    //     console.log(resp);
+    //         var results = resp;
+    //             // Looping through each result item
+    //         for (var i = 0; i < 5; i++) {
+
+    //             // Creating and storing a div tag
+    //             var animalDiv = $("<div>");
+
+    //             // Creating a paragraph tag with the result item's rating
+    //             var p = $("<p>").text("Temperature: " + results[i]);
+    //             var date = $("<p>").text(results[i].date_iso)
+    //             // Appending the paragraph and image tag to the animalDiv
+    //             animalDiv.append(date);
+    //             animalDiv.append(p)
+    //             console.log(animalDiv.append(p))
+    //             $("#UV-index-results-here").prepend(animalDiv);
+    //         }
+    
+        // });
+
+});
+
+
+
+</script>
+
+    
+</body>
+</div>
+</html>
