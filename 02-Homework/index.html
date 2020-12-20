@@ -11,7 +11,7 @@
 <body>
 
 <main id="mainContainer" class="row">
-    <container class="col-3">
+    <container class="col-2">
         <form id="weather-form">
             <label for="locationInput"><strong>Location</strong></label>
             <input type="text" id="locationInput" placeholder="(e.g. Las Vegas)"><br>
@@ -20,8 +20,9 @@
         </form>
     </container>
 
-    <container class="col-9">
+    <container class="col-10">
     <div class="row">
+    <div class="col-12">
     <ul>
     <header id="cityNameData"></header>
     <li><div id="temperature"></div></li>
@@ -32,7 +33,7 @@
     <!-- <button id="searchButton">Search</button> -->
     </div>
 
-    <div id="UV-index-results-here">
+    <div id="UV-index-results-here" class="row">
     </div>
     </container>
 </main>
@@ -69,7 +70,7 @@
             var lon = response.coord.lon
             console.log(lon);
 
-            var ForecastIndexQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly" + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
+            var ForecastIndexQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly" + "&units=imperial" + "&appid=1b5e9096e8f25e04ccd2e1d65aa7ae08";
 
         $.ajax({
             url: ForecastIndexQueryURL,
@@ -77,11 +78,30 @@
         }).then(function(res) {
             console.log(res);
 
+            $("#UV-index-results-here").empty();
             $("#cityNameData").html("<h1>" + cityName + "</h1>");
             $("#temperature").text("Temperature: " + res.current.temp);
             $("#humidity").text("Humidity: " + res.current.humidity);
             $("#wind-speed").text("Wind Speed: " + res.current.weather.wind_speed);
             $("#uvIndex").text("Wind Speed: " + res.current.uvi);
+
+            console.log(res);
+            var results = res.daily;
+            // Looping through each result item
+            for (var i = 0; i < 5; i++) {
+
+                // Creating and storing a div tag
+                var forecastDiv = $("<div>");
+                forecastDiv.addClass("col-md")
+
+                // Creating a paragraph tag with the result item's rating
+                var dailyTemp = $("<p>").text("Temperature: " + results[i].temp.day);
+                var dailyHumidity = $("<p>").text("Humidity: " + results[i].humidity);
+                // Appending the paragraph and image tag to the animalDiv
+                forecastDiv.append(dailyTemp);
+                forecastDiv.append(dailyHumidity)
+                $("#UV-index-results-here").prepend(forecastDiv);
+            }
 
 
         });
@@ -93,23 +113,7 @@
     //       method: "GET"
     //     }).then(function(resp) {
 
-    //     console.log(resp);
-    //         var results = resp;
-    //             // Looping through each result item
-    //         for (var i = 0; i < 5; i++) {
 
-    //             // Creating and storing a div tag
-    //             var animalDiv = $("<div>");
-
-    //             // Creating a paragraph tag with the result item's rating
-    //             var p = $("<p>").text("Temperature: " + results[i]);
-    //             var date = $("<p>").text(results[i].date_iso)
-    //             // Appending the paragraph and image tag to the animalDiv
-    //             animalDiv.append(date);
-    //             animalDiv.append(p)
-    //             console.log(animalDiv.append(p))
-    //             $("#UV-index-results-here").prepend(animalDiv);
-    //         }
     
         // });
 
