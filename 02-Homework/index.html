@@ -24,17 +24,10 @@
     <div class="row">
     <div class="col-12">
     <ul>
-    <header id="cityNameData"></header>
-    <li><div id="temperature"></div></li>
-    <li><div id="humidity"></div></li>
-    <li><div id="wind-speed"></div></li>
-    <li><div id="uvIndex"></div></li>
+    <div id="currentResults"></div>
     </ul>
-    <!-- <button id="searchButton">Search</button> -->
-    </div>
 
-    <div id="UV-index-results-here" class="row">
-    </div>
+    <div id="UV-index-results-here" class="row"></div>
     </container>
 </main>
 
@@ -78,15 +71,36 @@
         }).then(function(res) {
             console.log(res);
 
-            $("#UV-index-results-here").empty();
-            $("#cityNameData").html("<h1>" + cityName + "</h1>");
-            $("#temperature").text("Temperature: " + res.current.temp);
-            $("#humidity").text("Humidity: " + res.current.humidity);
-            $("#wind-speed").text("Wind Speed: " + res.current.weather.wind_speed);
-            $("#uvIndex").text("Wind Speed: " + res.current.uvi);
+        $("#currentResults").empty();
+        
+            let currentRes = res.current;
+            let currentDiv = $("<div>");
+            let currentIconArray = currentRes.weather[0].icon;
+            console.log(currentIconArray);
+            let currentWeatherIcon = "http://openweathermap.org/img/w/" + currentIconArray + ".png";
+            console.log(currentWeatherIcon)
 
+
+            let userCity = $("<p>").html("<h1>" + cityName + "</h1>");
+            let currentIcon = $("<img>").attr('src', currentWeatherIcon);
+            let currentTemp = $("<li>").text("Temperature: " + currentRes.temp);
+            let currentHumidity = $("<li>").text("Humidity: " + currentRes.humidity);
+            let currentWindSpeed = $("<li>").text("Wind Speed: " + currentRes.weather.wind_speed);
+            let currentUVId = $("<li>").text("UV Index: " + currentRes.uvi);
+
+            currentDiv.append(userCity);
+            currentDiv.append(currentIcon);
+            currentDiv.append(currentTemp);
+            currentDiv.append(currentHumidity);
+            currentDiv.append(currentWindSpeed);
+            currentDiv.append(currentUVId);
+
+            $("#currentResults").append(currentDiv);
+
+            
             console.log(res);
             var results = res.daily;
+            $("#UV-index-results-here").empty();
             // Looping through each result item
             for (var i = 0; i < 5; i++) {
 
@@ -106,14 +120,12 @@
                 // Appending the paragraph and image tag to the animalDiv
                 forecastDiv.append(iconDisplayed);
                 forecastDiv.append(dailyTemp);
-                forecastDiv.append(dailyHumidity)
+                forecastDiv.append(dailyHumidity);
 
                 $("#UV-index-results-here").append(forecastDiv);
 
                 
             }
-
-
         });
 
     });
