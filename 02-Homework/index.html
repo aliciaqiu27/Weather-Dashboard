@@ -105,7 +105,14 @@
             let currentTemp = $("<li>").text("Temperature: " + currentRes.temp);
             let currentHumidity = $("<li>").text("Humidity: " + currentRes.humidity);
             let currentWindSpeed = $("<li>").text("Wind Speed: " + currentRes.wind_speed);
-            let currentUVId = $("<li>").text("UV Index: " + currentRes.uvi);
+            let currentUVId = $("<container>").text("UV Index: " + currentRes.uvi);
+
+        if (currentRes.uvi>5) {
+            currentUVId.addClass("red");
+        }
+        else {
+            currentUVId.addClass("green");
+        }
 
             currentDiv.append(userCity, currentIcon, currentTemp, currentHumidity, currentWindSpeed, currentUVId);
 
