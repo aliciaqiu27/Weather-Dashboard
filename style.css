@@ -6,6 +6,10 @@
     padding:2%;
 }
 
+#mainContainer ul {
+    list-style-type: none;
+}
+
 #weather-form {
     align-content: left;
     left: 1%;
@@ -15,21 +19,24 @@
     max-width: 100%;
 }
 
-#UV-index-results-here, #currentResults{
+#five-day-forecast-goes-here, #currentResults{
     height: 300px;
-    font-size: 25px;
+    font-size: 20px;
+    line-break: normal;
 }
 
-#mainContainer ul {
-    list-style-type: none;
+header {
+    display: block;
+    color:black;
 }
 
 .forecast-div {
-    background-color:rgba(0, 0, 223, 0.788);
+    background-color:rgba(55, 161, 202, 0.822);
     color: white;
     box-shadow: rgba(160, 131, 131, 0.719) 0px 2px 8px 0px;
     border-radius: 25px;
     margin: 10px;
+    line-break: normal;
 }
 
 .historyBlock {
@@ -41,7 +48,6 @@
 }
 #History-goes-here {
     line-break: normal;
-    font: 15px;
     color:blue;
     display: block;
     max-width: 100%;

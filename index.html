@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<main id="mainContainer" class="row">
+    <container class="col-2">
+        <container class="row">
+        <form id="weather-form">
+            <label for="locationInput"><strong><h2>Search for a city:</h2></strong></label>
+            <input type="text" id="locationInput" placeholder="Las Vegas">
+        <!-- This button will trigger our AJAX call -->
+            <input id="searchButton" type="submit" value="Search"></input>
+        </form>
+       
+        <div id="History-goes-here" class="row">
+        
+        </div>
+
+    </container>
+    </container>
+
+    <container class="col-10">
+    <div class="row">
+    <div class="col-12">
+    <ul>
+    <div id="currentResults"></div>
+    </ul>
+
+    <header id="header"></header>
+    <div id="five-day-forecast-goes-here" class="row"></div>
+    </lu>
+    </container>
+</main>
+
+    <script src="script.js"></script>
+
+    
+</body>
+</div>
+</html>
